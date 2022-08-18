@@ -36,20 +36,20 @@ function [varargout]=adr2mat(adrname,varargin)
 
 if ~ispc
    error('This program does NOT work on MAC.');
-   return
-end
-if nargin<1 || ~ischar(adrname)
+   return;
+end;
+if nargin<1 | ~ischar(adrname)
    help(mfilename);
-   return
-end
+   return;
+end;
 if nargin>1
    btORbk=varargin{1};
    if length(btORbk)<2
       btORbk=[btORbk -1E+10];
-   end
+   end;
 else
    btORbk=[1E+10 -1E+10];
-end
+end;
 fid=fopen(adrname);
 fseek(fid,0,1);%fast forward to end
 filesize=ftell(fid);
@@ -79,7 +79,7 @@ b.extsensorinstalled=a(2);
 if a(3)>0
 pointer1={'Paros','Druck','ParosFreq'};
 b.extpressinstalled=pointer1{a(3)};
-end
+end;
 b.pressscale_2=fread(fid,1,'int16');
 b.ctdinstalled=fread(fid,1,'char');
 
@@ -97,7 +97,7 @@ a=fread(fid,[1,6],'char');
 a(a==0)=[];
 b.serialnum=char(a);
 a=fread(fid,2,'char');
-indx=pointernum==a(1);
+indx=find(pointernum==a(1));
 b.probetype=pointer1{indx};
 fseek(fid,102,0);
 b.xfercoeff=fread(fid,[3,3],'float32');
@@ -134,15 +134,15 @@ b.sampleperburst=a(:,3)';
 b.rectype=fread(fid,[1,3],'uchar');
 bitsize=[0 3 4 0 0 4 6 4];
 rectype=[];rflag=[];
-for irec=1:3
+for irec=1:3,
 	tata=dec2bin(b.rectype(irec));
 	rectype2='00000000';
 	rectype2(8-length(tata)+1 : 8)=tata;
-	rflag2=str2double(rectype2(:))';
+	rflag2=str2num(rectype2(:))';
 	sampsize(irec)=8+sum(bitsize(rflag2>0));
    rectype=[rectype;fliplr(rectype2)];
    rflag=[rflag;rflag2];
-end
+end;
 pointer1={'Auto','Polled'};
 pointer2={'Binary','Ascii'};
 pointer3={'DISABLED','ENABLED'};
@@ -164,7 +164,7 @@ for j=1:3
 	a=char(fread(fid,[1,60],'char'));
 	a(a==0)=[];
 	eval(['b.comment' num2str(j) '=a;']);
-end
+end;
 b.autosleep=fread(fid,1,'char');
 fseek(fid,7,0);
 fprintf('\nBurst: ');
@@ -177,12 +177,12 @@ while ~feof(fid)
 	%---read burst header (60 byptes)----
 	fseek(fid,14,0);
    burst=fread(fid,1,'uint32');
-    if isempty(burst)
+	if isempty(burst)
 		break;
-    end
-   if diff(btORbk)>=0 && burst>btORbk(2)
+   end;
+   if diff(btORbk)>=0 & burst>btORbk(2)
       break;
-   end
+   end;
    burst=burst-burst0;
 	datetime(1)=fread(fid,1,'int16');
 	a=fread(fid,6,'char');
@@ -196,7 +196,7 @@ while ~feof(fid)
       jrec=idx1;
    else
       error('Something wrong with the data!');
-   end
+   end;
    
    burstsize=rflag(jrec,4)*38 + rflag(jrec,1)*16 +spb*sampsize(jrec);
 	if burstsize > (filesize-ftell(fid)+1)
@@ -204,22 +204,22 @@ while ~feof(fid)
       burst=burst-1;
       endflag=1;
 		break;
-    end
+	end;
    fseek(fid,2,0);
    a2=fread(fid,1,'uint16');
    a3=fread(fid,2,'int16');
    a4=fread(fid,[1,20],'uchar');
-  	if diff(btORbk)<0 || burst>= btORbk(1)
+  	if diff(btORbk)<0 | burst>= btORbk(1)
       fprintf(['\n' num2str(burst+burst0) '...']);
-    end
+  	end;
    
- if diff(btORbk)>=0 && burst<btORbk(1)
+ if diff(btORbk)>=0 & burst<btORbk(1)
    c=[];
    fseek(fid,burstsize,0);
  else
    if diff(btORbk)>=0
       burst=burst-btORbk(1)+1;
-   end
+   end;
 	c.time(burst,1)=julian([datetime,a(2),a(1),a(4),a(3),a(6)+0.01*a(5)]);
 	c.samprate(burst,1)=0.01*a1(1); %Hz
  	c.sampleperburst(burst,1)=spb;
@@ -240,7 +240,7 @@ while ~feof(fid)
      for kk=1:6
    	ampcorr(:,kk)=fread(fid,spb,'uchar',sampsize(jrec)-1);
       fseek(fid,-sampsize(jrec)*spb+1,0);
-     end
+     end;
      c.amp{burst}=ampcorr(:,1:3);
      c.corr{burst}=ampcorr(:,4:6);
      ampcorr=[];
@@ -248,11 +248,11 @@ while ~feof(fid)
      for kk=1:2
    	ampcorr(:,kk)=fread(fid,spb,'uchar',sampsize(jrec)-1);
       fseek(fid,-sampsize(jrec)*spb+1,0);
-     end
+     end;
     c.amp{burst}=ampcorr(:,1);
      c.corr{burst}=ampcorr(:,2);
      ampcorr=[];
-   end
+   end;
  if isequal(rectype(jrec,2),'1')
    c.heading{burst}(:,1)=0.1*fread(fid,spb,'int16',sampsize(jrec)-2);
    fseek(fid,-sampsize(jrec)*spb+2,0);
@@ -260,23 +260,23 @@ while ~feof(fid)
    fseek(fid,-sampsize(jrec)*spb+2,0);
    c.roll{burst}(:,1)=0.1*fread(fid,spb,'int16',sampsize(jrec)-2);
    fseek(fid,-sampsize(jrec)*spb+2,0);
- end
+ end;
  if isequal(rectype(jrec,3),'1')
    c.temperature{burst}(:,1)=0.01*fread(fid,spb,'int16',sampsize(jrec)-2);
    fseek(fid,-sampsize(jrec)*spb+2,0);
    c.pressure{burst}(:,1)=fread(fid,spb,'int16',sampsize(jrec)-2);
    fseek(fid,-sampsize(jrec)*spb+2,0);
- end
+ end;
  if isequal(rectype(jrec,6),'1')
    c.extsensor{burst}(:,1)=fread(fid,spb,'int16',sampsize(jrec)-2);
    fseek(fid,-sampsize(jrec)*spb+2,0);
    c.extsensor{burst}(:,2)=fread(fid,spb,'int16',sampsize(jrec)-2);
    fseek(fid,-sampsize(jrec)*spb+2,0);
- end
+ end;
  if isequal(rectype(jrec,7),'1')
   c.extpress{burst}(:,1)=fread(fid,spb,'ubit24',(sampsize(jrec)-3)*8);
    fseek(fid,-sampsize(jrec)*spb+3,0);
- end
+ end;
  fseek(fid,sampsize(jrec)*(spb-1),0);
  if isequal(rectype(jrec,5),'1')
       means=[fread(fid,[1,6],'uchar'),...
@@ -290,13 +290,13 @@ while ~feof(fid)
 		c.mean(burst,:)=[means mean([vel1 vel2 vel3])];
       c.std(burst,:)=[stds std([vel1 vel2 vel3])];
 		c.soundspeed(burst,1)=fread(fid,1,'uint16');
- end
+ end;
  if isequal(rectype(jrec,8),'1')
    c.ctd(burst,:)=fread(fid,[1,4],'int32');
- end
+ end;
 fseek(fid,2,0); % checksum
 whereisit=ftell(fid);
-if diff(btORbk)<0 && whereisit-newstart > btORbk(1)*1024*1024 % btORbk MB
+if diff(btORbk)<0 & whereisit-newstart > btORbk(1)*1024*1024 % btORbk MB
    c.burstrange=[burst0+1 burst+burst0];
    c.metadata=b;
    burst0=burst+burst0;
@@ -308,23 +308,23 @@ if diff(btORbk)<0 && whereisit-newstart > btORbk(1)*1024*1024 % btORbk MB
    save(matname,'advdata');
    c=[];
    saved=1;
-end
+end;
 %	if burst==2 break;end;
-end
-end  %while
+end;
+end;  %while
 if diff(btORbk)>=0
    c.burstrange=btORbk;
-end
+end;
 fclose(fid);
 c.metadata=b;
 varargout{1}=c;
-if saved && endflag 
+if saved & endflag 
    c.burstrange=[burst0+1 burst+burst0];
    fnum=fnum+1;
    matname=[b.serialnum '_' num2str(fnum)];
    fprintf('\nThe above bursts are saved in file [%s.mat]\n',matname);
    advdata=c;
    save(matname,'advdata');
-end
+end;
 fprintf('\nCompleted.\n');
-return
+return;
