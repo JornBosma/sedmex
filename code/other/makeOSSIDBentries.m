@@ -12,6 +12,7 @@ timeOUT = MET2sedmextime([2021 10 19 10 0 0]);
 
 L1C2_OSSI(1).timeIN = timeIN;
 L1C2_OSSI(1).timeOUT = timeOUT;
+L1C2_OSSI(1).summerTime = 1; % instrument operates in summertime (= 1) OR wintertime (= 0)
 L1C2_OSSI(1).type = 'OSSI-010-003C0-3';
 L1C2_OSSI(1).serialNumber = '04.18.09.00.01';
 L1C2_OSSI(1).pressureSensor = 'Paroscientific 745 S/N 97581';
@@ -31,6 +32,7 @@ L1C2_OSSI(1).timeOffset(2,2) = -136;
 
 L2C5_OSSI(1).timeIN = MET2sedmextime([2021 9 19 0 0 0]);
 L2C5_OSSI(1).timeOUT = timeOUT;
+L2C5_OSSI(1).summerTime = 1; % instrument operates in summertime (= 1) OR wintertime (= 0)
 L2C5_OSSI(1).type = 'OSSI-010-003C0-3';
 L2C5_OSSI(1).serialNumber = '04.18.09.00.10';
 L2C5_OSSI(1).pressureSensor = 'Paroscientific 745 S/N 97581';
@@ -50,6 +52,7 @@ L2C5_OSSI(1).timeOffset(2,2) = -71;
 
 L2C6_OSSI(1).timeIN = timeIN;
 L2C6_OSSI(1).timeOUT = timeOUT;
+L2C6_OSSI(1).summerTime = 1; % instrument operates in summertime (= 1) OR wintertime (= 0)
 L2C6_OSSI(1).type = 'OSSI-010-003C0-3';
 L2C6_OSSI(1).serialNumber = '04.18.09.00.03';
 L2C6_OSSI(1).pressureSensor = 'Paroscientific 745 S/N 97581';
@@ -69,6 +72,7 @@ L2C6_OSSI(1).timeOffset(2,2) = -19;
 
 L2C8_OSSI(1).timeIN = timeIN;
 L2C8_OSSI(1).timeOUT = timeOUT;
+L2C8_OSSI(1).summerTime = 1; % instrument operates in summertime (= 1) OR wintertime (= 0)
 L2C8_OSSI(1).type = 'OSSI-010-003C0-3';
 L2C8_OSSI(1).serialNumber = '04.18.09.00.09';
 L2C8_OSSI(1).pressureSensor = 'Paroscientific 745 S/N 97581';
@@ -88,6 +92,7 @@ L2C8_OSSI(1).timeOffset(2,2) = -27;
 
 L2C9_OSSI(1).timeIN = timeIN;
 L2C9_OSSI(1).timeOUT = timeOUT;
+L2C9_OSSI(1).summerTime = 1; % instrument operates in summertime (= 1) OR wintertime (= 0)
 L2C9_OSSI(1).type = 'OSSI-010-003C0-3';
 L2C9_OSSI(1).serialNumber = '04.18.09.00.08';
 L2C9_OSSI(1).pressureSensor = 'Paroscientific 745 S/N 97581';
@@ -107,6 +112,7 @@ L2C9_OSSI(1).timeOffset(2,2) = -63;
 
 L4C3_OSSI(1).timeIN = timeIN;
 L4C3_OSSI(1).timeOUT = timeOUT;
+L4C3_OSSI(1).summerTime = 1; % instrument operates in summertime (= 1) OR wintertime (= 0)
 L4C3_OSSI(1).type = 'OSSI-010-003C0-3';
 L4C3_OSSI(1).serialNumber = '04.18.09.00.04';
 L4C3_OSSI(1).pressureSensor = 'Paroscientific 745 S/N 97581';
@@ -126,6 +132,7 @@ L4C3_OSSI(1).timeOffset(2,2) = -73;
 
 L5C2_OSSI(1).timeIN = timeIN;
 L5C2_OSSI(1).timeOUT = timeOUT;
+L5C2_OSSI(1).summerTime = 1; % instrument operates in summertime (= 1) OR wintertime (= 0)
 L5C2_OSSI(1).type = 'OSSI-010-003C0-3';
 L5C2_OSSI(1).serialNumber = '04.18.09.00.05';
 L5C2_OSSI(1).pressureSensor = 'Paroscientific 745 S/N 97581';
@@ -145,6 +152,7 @@ L5C2_OSSI(1).timeOffset(2,2) = -37;
 
 L6C2_OSSI(1).timeIN = timeIN;
 L6C2_OSSI(1).timeOUT = timeOUT;
+L6C2_OSSI(1).summerTime = 1; % instrument operates in summertime (= 1) OR wintertime (= 0)
 L6C2_OSSI(1).type = 'OSSI-010-003C0-3';
 L6C2_OSSI(1).serialNumber = '04.18.09.00.06';
 L6C2_OSSI(1).pressureSensor = 'Paroscientific 745 S/N 97581';
